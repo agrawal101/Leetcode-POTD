@@ -1,0 +1,52 @@
+class Solution {
+    public String pushDominoes(String dominoes) {
+        int n = dominoes.length();
+        int leftR[] = new int[n];
+        int rightL[] = new int[n];
+        char crr[] = dominoes.toCharArray();
+        for(int i = 0;i<n;i++)
+        {
+            if(crr[i]=='R')
+            {
+                leftR[i] = i;
+            }
+            else if(i==0 || crr[i]=='L')
+            leftR[i] = -1;
+            else
+            {
+                leftR[i] = leftR[i-1];
+            }
+        }
+        for(int i = n-1;i>=0;i--)
+        {
+            if(crr[i]=='L')
+            {
+                rightL[i] = i;
+            }
+            else if(i==n-1 || crr[i]=='R')
+            rightL[i] = -1;
+            else
+            {
+                rightL[i] = rightL[i+1];
+            }
+        }
+        for(int i = 0;i<n;i++)
+        {
+            if(crr[i]=='.')
+            {
+                if(rightL[i]==-1 && leftR[i]!=-1)
+                crr[i] = 'R';
+                else if(rightL[i]!=-1 && leftR[i]==-1)
+                crr[i] = 'L';
+                else if(rightL[i]!=-1 && leftR[i]!=-1)
+                {
+                    if((rightL[i]-i)>(i-leftR[i]))
+                    crr[i] = 'R';
+                    else if((rightL[i]-i)<(i-leftR[i]))
+                    crr[i] = 'L';
+                }
+            }
+        }
+        return String.valueOf(crr);
+    }
+}
