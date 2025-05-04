@@ -1,0 +1,15 @@
+Problem Link - https://leetcode.com/problems/number-of-equivalent-domino-pairs/?envType=daily-question&envId=2025-05-04
+
+class Solution {
+    public int numEquivDominoPairs(int[][] dominoes) {
+        int cnt[] = new int[100];
+        int ans = 0;
+        for(int ar[]:dominoes)
+        {
+            int n = ar[0]<ar[1]?ar[0]*10+ar[1]:ar[1]*10+ar[0];
+            ans+=cnt[n];
+            cnt[n]++;
+        }
+        return ans;
+    }
+}
