@@ -1,0 +1,17 @@
+Problem Link - https://leetcode.com/problems/build-array-from-permutation/description/?envType=daily-question&envId=2025-05-06
+
+class Solution {
+    public int[] buildArray(int[] nums) {
+        rec(nums,0);
+        return nums;
+    }
+    public void rec(int num[],int i)
+    {
+        if(i<num.length)
+        {
+            int res = num[num[i]];
+            rec(num,i+1);
+            num[i] = res;
+        }
+    }
+}
