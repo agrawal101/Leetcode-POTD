@@ -1,0 +1,64 @@
+Problem link - https://leetcode.com/problems/painting-a-grid-with-three-different-colors/description/?envType=daily-question&envId=2025-05-18
+
+class Solution {
+    ArrayList<String> columnStates = new ArrayList<>();
+    long mod = 1000000007;
+    long t[][];
+    public void genCol(String s,char prevC, int m)
+    {
+        if(m==0){
+            columnStates.add(s);
+            return;
+        }
+        for(char c:new char []{'R','G','B'})
+        {
+            if(c==prevC)
+            continue;
+            genCol(s+c,c,m-1);
+        }
+    }
+    public int colorTheGrid(int m, int n) {
+        genCol("",'#',m);
+        long res = 0;
+        int colsize = columnStates.size();
+        t = new long [n+1][colsize+1];
+        for(long arr[]:t)
+        {
+            Arrays.fill(arr,-1);
+        }
+        for(int i = 0;i<colsize;i++)
+        {
+            res = (res+solve(n-1,i))%mod;
+        }
+        return (int)res;
+    }
+    public long solve(int n,int prevind)
+    {
+        if(n==0)
+        return 1;
+        long ways = 0;
+        String prev = columnStates.get(prevind);
+        if(t[n][prevind]!=-1)
+        return t[n][prevind];
+        for(int i = 0;i<columnStates.size();i++)
+        {
+            if(i==prevind)
+            continue;
+            boolean flag = true;
+            String curr = columnStates.get(i);
+            for(int j = 0;j<prev.length();j++)
+            {
+                if(prev.charAt(j)==curr.charAt(j))
+                {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag)
+            {
+                ways = (ways+solve(n-1,i))%mod;
+            }
+        }
+        return t[n][prevind] = ways;
+    }
+}
