@@ -1,0 +1,21 @@
+Problem link - https://leetcode.com/problems/zero-array-transformation-i/description/?envType=daily-question&envId=2025-05-20
+
+class Solution {
+    public boolean isZeroArray(int[] nums, int[][] queries) {
+        int temp[] = new int[nums.length+1];
+        for(int arr[]:queries)
+        {
+            temp[arr[0]]+=1;
+            temp[arr[1]+1]-=1;
+        }
+        int sum = 0;
+        for(int i = 0;i<nums.length;i++)
+        {
+            sum+=temp[i];
+            temp[i] = sum;
+            if(temp[i]<nums[i])
+                return false;
+        }
+        return true;
+    }
+}
