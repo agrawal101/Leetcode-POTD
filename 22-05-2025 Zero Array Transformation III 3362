@@ -1,0 +1,38 @@
+Problem Link - https://leetcode.com/problems/zero-array-transformation-iii/description/?envType=daily-question&envId=2025-05-22
+
+Priority Queue
+
+class Solution {
+    public int maxRemoval(int[] nums, int[][] queries) {
+        int n = nums.length;
+        int q = queries.length;
+        Arrays.sort(queries, (a,b)->Integer.compare(a[0],b[0]));
+        PriorityQueue<Integer> end = new PriorityQueue<>(Collections.reverseOrder());
+        PriorityQueue<Integer> past = new PriorityQueue<>();
+        int j = 0;
+        int used = 0;
+        for(int i = 0;i<n;i++)
+        {
+            while(j<q && queries[j][0]==i)
+            {
+                end.add(queries[j][1]);
+                j++;
+            }
+            nums[i]-=past.size();
+            while(nums[i]>0 && !end.isEmpty() && end.peek()>=i)
+            {
+                int ending = end.poll();
+                past.add(ending);
+                used++;
+                nums[i]--;
+            }
+            if(nums[i]>0)
+            return -1;
+            while(!past.isEmpty() && past.peek()<=i)
+            {
+                past.poll();
+            }
+        }
+        return q-used;
+    }
+}
