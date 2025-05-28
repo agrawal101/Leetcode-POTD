@@ -1,0 +1,75 @@
+Problem link - https://leetcode.com/problems/maximize-the-number-of-target-nodes-after-connecting-trees-i/description/?envType=daily-question&envId=2025-05-28
+
+class Solution {
+    public int[] maxTargetNodes(int[][] edges1, int[][] edges2, int k) {
+        int l1 = edges1.length;
+        int l2 = edges2.length;
+        ArrayList<ArrayList<Integer>> adj1 = new ArrayList<>();
+        for(int i = 0;i<=l1;i++)
+        {
+            adj1.add(new ArrayList<>());
+        }
+        ArrayList<ArrayList<Integer>> adj2 = new ArrayList<>();
+        for(int i = 0;i<=l2;i++)
+        {
+            adj2.add(new ArrayList<>());
+        }
+        for(int ar[]:edges1)
+        {
+            adj1.get(ar[0]).add(ar[1]);
+            adj1.get(ar[1]).add(ar[0]);
+        }
+        for(int ar[]:edges2)
+        {
+            adj2.get(ar[0]).add(ar[1]);
+            adj2.get(ar[1]).add(ar[0]);
+        }
+        int arr2[] = new int[l2+1];
+        if(k>0){
+            for(int i = 0;i<=l2;i++)
+            {
+                arr2[i] = bfs(adj2,i,k-1,l2+1);
+            }
+        }
+        int arr1[] = new int[l1+1];
+        for(int i = 0;i<=l1;i++)
+        {
+            arr1[i] = bfs(adj1,i,k,l1+1);
+        }
+
+        int max = 0;
+        for(int x:arr2)
+        max = Math.max(max,x);
+
+        int ans[] = new int[l1+1];
+        for(int i = 0;i<=l1;i++)
+        {
+            ans[i] = arr1[i]+max;
+        }
+        return ans;
+    }
+    public int bfs(ArrayList<ArrayList<Integer>> adj,int i,int k,int v)
+    {
+        Queue<int []> q = new LinkedList<>();
+        q.add(new int[]{i,0});
+        int cnt = 1;
+        boolean vis[] = new boolean[v];
+        vis[i] = true;
+        while(!q.isEmpty())
+        {
+            int temp[] = q.poll();
+            if(temp[1]==k)
+            continue;
+            for(int x:adj.get(temp[0]))
+            {
+                if(vis[x]==false)
+                {
+                    vis[x] = true;
+                    q.add(new int[]{x,temp[1]+1});
+                    cnt++;
+                }
+            }
+        }
+        return cnt;
+    }
+}
