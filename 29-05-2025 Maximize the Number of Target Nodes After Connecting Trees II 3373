@@ -1,0 +1,62 @@
+Problem link - https://leetcode.com/problems/maximize-the-number-of-target-nodes-after-connecting-trees-ii/description/?envType=daily-question&envId=2025-05-29
+
+class Solution {
+    public int[] maxTargetNodes(int[][] edges1, int[][] edges2) {
+        int l1 = edges1.length;
+        int l2 = edges2.length;
+        ArrayList<ArrayList<Integer>> adj1 = new ArrayList<>();
+        for(int i = 0;i<=l1;i++)
+        {
+            adj1.add(new ArrayList<>());
+        }
+        ArrayList<ArrayList<Integer>> adj2 = new ArrayList<>();
+        for(int i = 0;i<=l2;i++)
+        {
+            adj2.add(new ArrayList<>());
+        }
+        for(int ar[]:edges1)
+        {
+            adj1.get(ar[0]).add(ar[1]);
+            adj1.get(ar[1]).add(ar[0]);
+        }
+        for(int ar[]:edges2)
+        {
+            adj2.get(ar[0]).add(ar[1]);
+            adj2.get(ar[1]).add(ar[0]);
+        }
+        int markA[] = new int[l1+1];
+        Arrays.fill(markA,-1);
+        int zcount1[] = new int[1];
+        int ocount1[] = new int[1];
+        dfs(0,adj1,-1,markA,zcount1,ocount1);
+
+        int markB[] = new int[l2+1];
+        Arrays.fill(markB,-1);
+        int zcount2[] = new int[1];
+        int ocount2[] = new int[1];
+        dfs(0,adj2,-1,markB,zcount2,ocount2);
+
+        int max = Math.max(ocount2[0],zcount2[0]);
+        int ans[] = new int[l1+1];
+        for(int i = 0;i<=l1;i++)
+        {
+            ans[i] = markA[i]==0?(zcount1[0]+max):(ocount1[0]+max);
+        }
+        return ans;
+    }
+     public void dfs(int node,ArrayList<ArrayList<Integer>> adj,int par,int mark[],int zcount[],int ocount[])
+     {
+        if(mark[node]==0)
+        zcount[0]++;
+        else
+        ocount[0]++;
+        for(int x:adj.get(node))
+        {
+            if(x!=par && mark[x]==-1)
+            {
+                mark[x] = mark[node]==0?1:0;
+                dfs(x,adj,node,mark,zcount,ocount);
+            }
+        }
+     }
+}
