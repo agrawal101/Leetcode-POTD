@@ -1,0 +1,45 @@
+Problem link - https://leetcode.com/problems/find-closest-node-to-given-two-nodes/description/?envType=daily-question&envId=2025-05-30
+
+class Solution {
+    public int closestMeetingNode(int[] edges, int node1, int node2) {
+        int n = edges.length;
+        int dis1[] = new int[n];
+        int dis2[] = new int[n];
+        Arrays.fill(dis1,-1);
+        Arrays.fill(dis2,-1);
+        dis1[node1] = 0;
+        bfs(edges,dis1,node1);
+        dis2[node2] = 0;
+        bfs(edges,dis2,node2);
+        int min = Integer.MAX_VALUE;
+        int max = 0;
+        int ans = -1;
+        for(int i = 0;i<n;i++)
+        {
+            if(dis1[i]==-1 || dis2[i]==-1)
+            continue;
+            max = Math.max(dis1[i],dis2[i]);
+            if(max<min)
+            {
+                min = max;
+                ans = i;
+            }
+        }
+        return ans;
+    }
+    public void bfs(int[] edges,int dis[],int i)
+    {
+        Queue<Integer> q = new LinkedList<>();
+        q.add(i);
+        while(!q.isEmpty())
+        {
+            int x = q.poll();
+            int d = edges[x];
+            if(d!=-1 && dis[d]==-1)
+            {
+                q.add(d);
+                dis[d] = dis[x]+1;
+            }
+        }
+    }
+}
