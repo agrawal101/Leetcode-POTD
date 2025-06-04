@@ -1,0 +1,19 @@
+Problem link - https://leetcode.com/problems/find-the-lexicographically-largest-string-from-the-box-i/description/?envType=daily-question&envId=2025-06-04
+
+class Solution {
+    public String answerString(String word, int numFriends) {
+        if(numFriends==1)
+        return word;
+        int n = word.length();
+        int possible = n-numFriends+1;
+        String ans = "";
+        for(int i = 0;i<n;i++)
+        {
+            int len = Math.min(possible, n-i);
+            String s = word.substring(i,len+i);
+            if(s.compareTo(ans)>0)
+                ans = s;
+        }
+        return ans;
+    }
+}
