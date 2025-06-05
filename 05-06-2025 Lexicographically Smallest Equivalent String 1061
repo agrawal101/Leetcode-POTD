@@ -1,0 +1,38 @@
+problem link - https://leetcode.com/problems/lexicographically-smallest-equivalent-string/?envType=daily-question&envId=2025-06-05
+
+class Solution {
+    public String smallestEquivalentString(String s1, String s2, String baseStr) {
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for(int i = 0;i<26;i++)
+        {
+            adj.add(new ArrayList<>());
+        }
+        int n = s1.length();
+        for(int i = 0;i<n;i++)
+        {
+            adj.get(s1.charAt(i)-'a').add(s2.charAt(i)-'a');
+            adj.get(s2.charAt(i)-'a').add(s1.charAt(i)-'a');
+        }
+        StringBuilder sb = new StringBuilder();
+        int vis[] = new int[26];
+        for(char c:baseStr.toCharArray())
+        {
+            Arrays.fill(vis,-1);
+            sb.append((char)(dfs(adj,c-'a',vis)+'a'));
+        }
+        return sb.toString();
+    }
+    public int dfs(ArrayList<ArrayList<Integer>> adj,int i,int vis[])
+    {
+        vis[i] = 1;
+        int min = i;
+        for(int x:adj.get(i))
+        {
+            if(vis[x]==-1)
+            {
+                min = Math.min(min,dfs(adj,x,vis));
+            }
+        }
+        return min;
+    }
+}
