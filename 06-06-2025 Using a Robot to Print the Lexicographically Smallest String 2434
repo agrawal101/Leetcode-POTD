@@ -1,0 +1,29 @@
+PRoblem link - https://leetcode.com/problems/using-a-robot-to-print-the-lexicographically-smallest-string/?envType=daily-question&envId=2025-06-06
+
+class Solution {
+    public String robotWithString(String s) {
+        StringBuilder sb = new StringBuilder();
+        int n = s.length();
+        char crr[] = new char [n];
+        crr[n-1] = s.charAt(n-1);
+        for(int i = s.length()-2;i>=0;i--)
+        {
+            char c = s.charAt(i);
+            crr[i] = (char)Math.min(crr[i+1],c);
+        }
+        StringBuilder temp = new StringBuilder();
+        for(int i = 0;i<n;i++)
+        {
+            char c = s.charAt(i);
+            temp.append(c);
+            char minc = i+1<n?crr[i+1]:crr[i];
+            while(temp.length()>0 && temp.charAt(temp.length()-1)<=minc)
+            {
+                sb.append(temp.charAt(temp.length()-1));
+                temp.deleteCharAt(temp.length()-1);
+            }
+        }
+        sb.append(temp.reverse().toString());
+        return sb.toString();
+    }
+}
