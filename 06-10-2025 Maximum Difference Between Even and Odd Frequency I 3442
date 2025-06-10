@@ -1,0 +1,25 @@
+Problem link - https://leetcode.com/problems/maximum-difference-between-even-and-odd-frequency-i/description/?envType=daily-question&envId=2025-06-10
+
+class Solution {
+    public int maxDifference(String s) {
+        int arr[] = new int[26];
+        for(char c:s.toCharArray())
+        {
+            arr[c-'a']++;
+        }
+        int ans = Integer.MIN_VALUE;
+        int maxo = 0;
+        int mine = s.length();
+        for(int x:arr)
+        {
+            if(x==0)
+            continue;
+            if(x%2==0)
+            mine = Math.min(mine,x);
+            else
+            maxo = Math.max(maxo,x);
+            ans = Math.max(ans,maxo-mine);
+        }
+        return ans==0?-1:ans;
+    }
+}
